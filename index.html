@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FASHIONÉ - Fashion E-Commerce Store</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f8f8f8;
+    color:#222;
+}
+
+header{
+    background:#111;
+    color:white;
+    padding:18px 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    font-size:26px;
+    letter-spacing:4px;
+    font-weight:bold;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.icons{
+    display:flex;
+    gap:20px;
+    font-size:21px;
+}
+
+.icons span{
+    cursor:pointer;
+}
+
+.hero{
+    height:520px;
+    display:flex;
+    align-items:center;
+    padding:60px 8%;
+    color:white;
+    background:
+    linear-gradient(90deg,rgba(0,0,0,.75),rgba(0,0,0,.1)),
+    url("https://images.unsplash.com/photo-1445205170230-053b83016050")
+    center/cover;
+}
+
+.hero-content{
+    max-width:600px;
+}
+
+.hero h1{
+    font-size:60px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:20px;
+    margin-bottom:30px;
+}
+
+.btn{
+    background:#fff;
+    color:#111;
+    border:0;
+    padding:15px 30px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+section{
+    padding:60px 7%;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:40px;
+    font-size:32px;
+}
+
+.filters{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:35px;
+    flex-wrap:wrap;
+}
+
+.filters button{
+    padding:10px 20px;
+    background:white;
+    border:1px solid #ccc;
+    cursor:pointer;
+}
+
+.filters button:hover{
+    background:#111;
+    color:white;
+}
+
+.search{
+    max-width:600px;
+    margin:0 auto 35px;
+    display:flex;
+}
+
+.search input{
+    flex:1;
+    padding:15px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+
+.search button{
+    background:#111;
+    color:white;
+    border:0;
+    padding:15px 25px;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:25px;
+}
+
+.product{
+    background:white;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    overflow:hidden;
+    position:relative;
+    transition:.3s;
+}
+
+.product:hover{
+    transform:translateY(-5px);
+}
+
+.product img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+
+.product-info{
+    padding:20px;
+}
+
+.product-info h3{
+    margin-bottom:10px;
+}
+
+.price{
+    font-weight:bold;
+    font-size:18px;
+    margin:10px 0;
+}
+
+.old-price{
+    text-decoration:line-through;
+    color:#999;
+    margin-right:8px;
+}
+
+.wishlist{
+    position:absolute;
+    right:15px;
+    top:15px;
+    background:white;
+    border:0;
+    border-radius:50%;
+    width:40px;
+    height:40px;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.add-btn{
+    width:100%;
+    padding:13px;
+    background:#111;
+    color:white;
+    border:0;
+    cursor:pointer;
+}
+
+.add-btn:hover{
+    background:#333;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:600px;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:30px;
+    position:relative;
+    border-radius:8px;
+}
+
+.close{
+    position:absolute;
+    right:20px;
+    top:15px;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.variant-img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+    margin-bottom:20px;
+}
+
+.option{
+    margin:20px 0;
+}
+
+.option h4{
+    margin-bottom:10px;
+}
+
+.option button{
+    padding:10px 18px;
+    margin:4px;
+    background:white;
+    border:1px solid #aaa;
+    cursor:pointer;
+}
+
+.option button.selected{
+    background:#111;
+    color:white;
+}
+
+.quantity{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.quantity button{
+    width:35px;
+    height:35px;
+    border:1px solid #aaa;
+    background:white;
+    cursor:pointer;
+}
+
+.checkout-form input,
+.checkout-form textarea,
+.checkout-form select{
+    width:100%;
+    padding:13px;
+    margin:8px 0 15px;
+    border:1px solid #ccc;
+}
+
+.checkout-form label{
+    font-weight:bold;
+}
+
+.cart-item{
+    display:flex;
+    gap:15px;
+    border-bottom:1px solid #ddd;
+    padding:15px 0;
+    align-items:center;
+}
+
+.cart-item img{
+    width:80px;
+    height:90px;
+    object-fit:cover;
+}
+
+.cart-item-info{
+    flex:1;
+}
+
+.remove{
+    background:#d33;
+    color:white;
+    border:0;
+    padding:7px 12px;
+    cursor:pointer;
+}
+
+.total{
+    margin-top:25px;
+    padding-top:20px;
+    border-top:2px solid #111;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#777;
+}
+
+footer{
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+    margin-top:30px;
+}
+
+footer p{
+    margin:8px;
+}
+
+.badge{
+    background:#e63946;
+    color:white;
+    font-size:11px;
+    padding:4px 7px;
+    border-radius:10px;
+    vertical-align:top;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#111;
+    color:white;
+    padding:15px 25px;
+    border-radius:5px;
+    display:none;
+    z-index:5000;
+}
+
+.success{
+    text-align:center;
+    padding:30px;
+}
+
+.success h2{
+    color:#1b8a3b;
+    margin-bottom:15px;
+}
+
+@media(max-width:700px){
+
+    header{
+        padding:15px 4%;
+    }
+
+    nav{
+        display:none;
+    }
+
+    .hero{
+        height:450px;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .modal-box{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">FASHIONÉ</div>
+
+    <nav>
+        <a onclick="scrollProducts()">Shop</a>
+        <a onclick="showWishlist()">Wishlist</a>
+        <a onclick="openCart()">Cart</a>
+    </nav>
+
+    <div class="icons">
+        <span onclick="showWishlist()">♡ <sup id="wishCount">0</sup></span>
+        <span onclick="openCart()">🛒 <sup id="cartCount">0</sup></span>
+    </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<div class="hero">
+
+    <div class="hero-content">
+
+        <h1>Define Your Style.</h1>
+
+        <p>
+            Discover premium fashion designed
+            for modern lifestyles.
+        </p>
+
+        <button class="btn" onclick="scrollProducts()">
+            SHOP COLLECTION
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- PRODUCTS -->
+
+<section id="productsSection">
+
+    <h2 class="section-title">
+        Our Collection
+    </h2>
+
+    <div class="search">
+
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Search fashion..."
+            onkeyup="searchProducts()">
+
+        <button onclick="searchProducts()">
+            SEARCH
+        </button>
+
+    </div>
+
+    <div class="filters">
+
+        <button onclick="filterProducts('all')">
+            All
+        </button>
+
+        <button onclick="filterProducts('Men')">
+            Men
+        </button>
+
+        <button onclick="filterProducts('Women')">
+            Women
+        </button>
+
+        <button onclick="filterProducts('Shoes')">
+            Shoes
+        </button>
+
+        <button onclick="filterProducts('Accessories')">
+            Accessories
+        </button>
+
+    </div>
+
+    <div class="products" id="productContainer"></div>
+
+</section>
+
+
+<!-- PRODUCT MODAL -->
+
+<div class="modal" id="productModal">
+
+    <div class="modal-box">
+
+        <span class="close" onclick="closeModal('productModal')">
+            ×
+        </span>
+
+        <img id="modalImage" class="variant-img">
+
+        <h2 id="modalName"></h2>
+
+        <p id="modalDescription"></p>
+
+        <div class="price">
+            ₹<span id="modalPrice"></span>
+        </div>
+
+        <div class="option">
+
+            <h4>Choose Color</h4>
+
+            <div id="colorOptions"></div>
+
+        </div>
+
+        <div class="option">
+
+            <h4>Choose Size</h4>
+
+            <div id="sizeOptions"></div>
+
+        </div>
+
+        <div class="option">
+
+            <h4>Quantity</h4>
+
+            <div class="quantity">
+
+                <button onclick="changeQuantity(-1)">
+                    -
+                </button>
+
+                <span id="quantity">1</span>
+
+                <button onclick="changeQuantity(1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+        <button class="add-btn" onclick="addToCart()">
+            ADD TO CART
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- CART MODAL -->
+
+<div class="modal" id="cartModal">
+
+    <div class="modal-box">
+
+        <span class="close" onclick="closeModal('cartModal')">
+            ×
+        </span>
+
+        <h2>🛒 Shopping Cart</h2>
+
+        <div id="cartItems"></div>
+
+        <div class="total">
+
+            <h3>
+                Subtotal:
+                ₹<span id="cartTotal">0</span>
+            </h3>
+
+            <br>
+
+            <button class="add-btn"
+                    onclick="openCheckout()">
+                PROCEED TO CHECKOUT
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- WISHLIST -->
+
+<div class="modal" id="wishlistModal">
+
+    <div class="modal-box">
+
+        <span class="close"
+              onclick="closeModal('wishlistModal')">
+            ×
+        </span>
+
+        <h2>♡ My Wishlist</h2>
+
+        <div id="wishlistItems"></div>
+
+    </div>
+
+</div>
+
+
+<!-- CHECKOUT -->
+
+<div class="modal" id="checkoutModal">
+
+    <div class="modal-box">
+
+        <span class="close"
+              onclick="closeModal('checkoutModal')">
+            ×
+        </span>
+
+        <h2>Secure Checkout 🔒</h2>
+
+        <br>
+
+        <div class="checkout-form">
+
+            <label>Full Name</label>
+            <input id="customerName"
+                   type="text"
+                   placeholder="Enter your name">
+
+            <label>Email</label>
+            <input id="customerEmail"
+                   type="email"
+                   placeholder="Enter your email">
+
+            <label>Phone</label>
+            <input id="customerPhone"
+                   type="tel"
+                   placeholder="Enter phone number">
+
+            <label>Address</label>
+            <textarea id="customerAddress"
+                      rows="4"
+                      placeholder="Enter delivery address"></textarea>
+
+            <label>City</label>
+            <input id="customerCity"
+                   type="text"
+                   placeholder="City">
+
+            <label>PIN Code</label>
+            <input id="customerPin"
+                   type="text"
+                   placeholder="PIN Code">
+
+            <label>Payment Method</label>
+
+            <select id="payment">
+                <option>Cash on Delivery</option>
+                <option>UPI</option>
+                <option>Credit / Debit Card</option>
+            </select>
+
+            <br>
+
+            <h3>
+                Order Total:
+                ₹<span id="checkoutTotal">0</span>
+            </h3>
+
+            <br>
+
+            <button class="add-btn"
+                    onclick="placeOrder()">
+                🔒 PLACE ORDER
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SUCCESS -->
+
+<div class="modal" id="successModal">
+
+    <div class="modal-box success">
+
+        <h2>✓ Order Placed Successfully!</h2>
+
+        <p id="orderNumber"></p>
+
+        <br>
+
+        <p>
+            Thank you for shopping with FASHIONÉ.
+        </p>
+
+        <br>
+
+        <button class="add-btn"
+                onclick="closeModal('successModal')">
+            CONTINUE SHOPPING
+        </button>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <h2>FASHIONÉ</h2>
+
+    <p>
+        Premium Fashion E-Commerce Store
+    </p>
+
+    <p>
+        Built for Java Full Stack Internship
+    </p>
+
+    <p>
+        Spring Boot • Hibernate • JPA • MySQL • Thymeleaf
+    </p>
+
+    <p>
+        © 2026 FASHIONÉ. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================
+   PRODUCT DATABASE
+========================= */
+
+const products = [
+
+{
+    id:1,
+    name:"Classic Cotton T-Shirt",
+    category:"Men",
+    price:799,
+    description:"Premium cotton t-shirt for everyday comfort.",
+    image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+    colors:["Black","White","Blue"],
+    sizes:["S","M","L","XL"]
+},
+
+{
+    id:2,
+    name:"Elegant Summer Dress",
+    category:"Women",
+    price:1499,
+    description:"Elegant lightweight dress designed for modern style.",
+    image:"https://images.unsplash.com/photo-1515372039744-b8f02a3ae446",
+    colors:["Black","Red","White"],
+    sizes:["S","M","L"]
+},
+
+{
+    id:3,
+    name:"Slim Fit Jeans",
+    category:"Men",
+    price:1299,
+    description:"Modern slim fit denim jeans.",
+    image:"https://images.unsplash.com/photo-1542272604-787c3835535d",
+    colors:["Blue","Black"],
+    sizes:["30","32","34","36"]
+},
+
+{
+    id:4,
+    name:"Premium Sneakers",
+    category:"Shoes",
+    price:2499,
+    description:"Comfortable premium sneakers for everyday wear.",
+    image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+    colors:["White","Black","Red"],
+    sizes:["7","8","9","10"]
+},
+
+{
+    id:5,
+    name:"Luxury Handbag",
+    category:"Accessories",
+    price:1899,
+    description:"Stylish handbag for modern fashion lovers.",
+    image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+    colors:["Black","Brown","Cream"],
+    sizes:["Standard"]
+},
+
+{
+    id:6,
+    name:"Oversized Hoodie",
+    category:"Women",
+    price:1199,
+    description:"Soft oversized hoodie with premium fabric.",
+    image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7",
+    colors:["Grey","Black","Pink"],
+    sizes:["S","M","L","XL"]
+},
+
+{
+    id:7,
+    name:"Formal Shirt",
+    category:"Men",
+    price:999,
+    description:"Classic formal shirt for professional occasions.",
+    image:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf",
+    colors:["White","Blue"],
+    sizes:["S","M","L","XL"]
+},
+
+{
+    id:8,
+    name:"Classic Sunglasses",
+    category:"Accessories",
+    price:699,
+    description:"Classic sunglasses with modern design.",
+    image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083",
+    colors:["Black","Brown"],
+    sizes:["Standard"]
+}
+
+];
+
+
+/* =========================
+   STATE
+========================= */
+
+let cart = [];
+
+let wishlist = [];
+
+let selectedProduct = null;
+
+let selectedColor = "";
+
+let selectedSize = "";
+
+let quantity = 1;
+
+let currentCategory = "all";
+
+
+/* =========================
+   DISPLAY PRODUCTS
+========================= */
+
+function displayProducts(list){
+
+    const container =
+        document.getElementById("productContainer");
+
+    container.innerHTML = "";
+
+    if(list.length === 0){
+
+        container.innerHTML =
+            '<div class="empty">No products found.</div>';
+
+        return;
+    }
+
+    list.forEach(product => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "product";
+
+        const liked =
+            wishlist.includes(product.id);
+
+        div.innerHTML = `
+
+            <button class="wishlist"
+                    onclick="toggleWishlist(${product.id})">
+                ${liked ? "♥" : "♡"}
+            </button>
+
+            <img src="${product.image}"
+                 alt="${product.name}">
+
+            <div class="product-info">
+
+                <h3>${product.name}</h3>
+
+                <p>${product.description}</p>
+
+                <div class="price">
+                    ₹${product.price}
+                </div>
+
+                <button class="add-btn"
+                        onclick="openProduct(${product.id})">
+                    VIEW PRODUCT
+                </button>
+
+            </div>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+function filterProducts(category){
+
+    currentCategory = category;
+
+    if(category === "all"){
+
+        displayProducts(products);
+
+    }else{
+
+        displayProducts(
+            products.filter(
+                p => p.category === category
+            )
+        );
+
+    }
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchProducts(){
+
+    const text =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    let result =
+        products.filter(p =>
+            p.name.toLowerCase().includes(text)
+        );
+
+    if(currentCategory !== "all"){
+
+        result =
+            result.filter(
+                p => p.category === currentCategory
+            );
+
+    }
+
+    displayProducts(result);
+
+}
+
+
+/* =========================
+   PRODUCT MODAL
+========================= */
+
+function openProduct(id){
+
+    selectedProduct =
+        products.find(p => p.id === id);
+
+    selectedColor =
+        selectedProduct.colors[0];
+
+    selectedSize =
+        selectedProduct.sizes[0];
+
+    quantity = 1;
+
+    document.getElementById("modalImage").src =
+        selectedProduct.image;
+
+    document.getElementById("modalName").innerText =
+        selectedProduct.name;
+
+    document.getElementById("modalDescription").innerText =
+        selectedProduct.description;
+
+    document.getElementById("modalPrice").innerText =
+        selectedProduct.price;
+
+    document.getElementById("quantity").innerText =
+        quantity;
+
+
+    const colors =
+        document.getElementById("colorOptions");
+
+    colors.innerHTML = "";
+
+    selectedProduct.colors.forEach(color => {
+
+        const button =
+            document.createElement("button");
+
+        button.innerText = color;
+
+        if(color === selectedColor)
+            button.classList.add("selected");
+
+        button.onclick = function(){
+
+            selectedColor = color;
+
+            document
+            .querySelectorAll("#colorOptions button")
+            .forEach(b =>
+                b.classList.remove("selected")
+            );
+
+            button.classList.add("selected");
+
+        };
+
+        colors.appendChild(button);
+
+    });
+
+
+    const sizes =
+        document.getElementById("sizeOptions");
+
+    sizes.innerHTML = "";
+
+    selectedProduct.sizes.forEach(size => {
+
+        const button =
+            document.createElement("button");
+
+        button.innerText = size;
+
+        if(size === selectedSize)
+            button.classList.add("selected");
+
+        button.onclick = function(){
+
+            selectedSize = size;
+
+            document
+            .querySelectorAll("#sizeOptions button")
+            .forEach(b =>
+                b.classList.remove("selected")
+            );
+
+            button.classList.add("selected");
+
+        };
+
+        sizes.appendChild(button);
+
+    });
+
+
+    document.getElementById("productModal")
+        .style.display = "flex";
+
+}
+
+
+/* =========================
+   QUANTITY
+========================= */
+
+function changeQuantity(amount){
+
+    quantity += amount;
+
+    if(quantity < 1)
+        quantity = 1;
+
+    if(quantity > 10)
+        quantity = 10;
+
+    document.getElementById("quantity")
+        .innerText = quantity;
+
+}
+
+
+/* =========================
+   ADD CART
+========================= */
+
+function addToCart(){
+
+    if(!selectedProduct)
+        return;
+
+    const existing =
+        cart.find(item =>
+            item.product.id === selectedProduct.id &&
+            item.color === selectedColor &&
+            item.size === selectedSize
+        );
+
+    if(existing){
+
+        existing.quantity += quantity;
+
+    }else{
+
+        cart.push({
+
+            product:selectedProduct,
+
+            color:selectedColor,
+
+            size:selectedSize,
+
+            quantity:quantity
+
+        });
+
+    }
+
+    updateCartCount();
+
+    closeModal("productModal");
+
+    showToast("✓ Product added to cart");
+
+}
+
+
+/* =========================
+   CART
+========================= */
+
+function openCart(){
+
+    renderCart();
+
+    document.getElementById("cartModal")
+        .style.display = "flex";
+
+}
+
+
+function renderCart(){
+
+    const container =
+        document.getElementById("cartItems");
+
+    container.innerHTML = "";
+
+    if(cart.length === 0){
+
+        container.innerHTML =
+            '<div class="empty">Your cart is empty.</div>';
+
+        document.getElementById("cartTotal")
+            .innerText = "0";
+
+        return;
+    }
+
+    let total = 0;
+
+    cart.forEach((item,index) => {
+
+        const itemTotal =
+            item.product.price * item.quantity;
+
+        total += itemTotal;
+
+        const div =
+            document.createElement("div");
+
+        div.className = "cart-item";
+
+        div.innerHTML = `
+
+            <img src="${item.product.image}">
+
+            <div class="cart-item-info">
+
+                <h4>${item.product.name}</h4>
+
+                <p>
+                    Color: ${item.color}
+                </p>
+
+                <p>
+                    Size: ${item.size}
+                </p>
+
+                <p>
+                    ₹${item.product.price}
+                    × ${item.quantity}
+                </p>
+
+            </div>
+
+            <button class="remove"
+                    onclick="removeCart(${index})">
+                Remove
+            </button>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+    document.getElementById("cartTotal")
+        .innerText = total;
+
+}
+
+
+function removeCart(index){
+
+    cart.splice(index,1);
+
+    updateCartCount();
+
+    renderCart();
+
+    showToast("Product removed");
+
+}
+
+
+function updateCartCount(){
+
+    const count =
+        cart.reduce(
+            (sum,item) =>
+            sum + item.quantity,
+            0
+        );
+
+    document.getElementById("cartCount")
+        .innerText = count;
+
+}
+
+
+/* =========================
+   WISHLIST
+========================= */
+
+function toggleWishlist(id){
+
+    if(wishlist.includes(id)){
+
+        wishlist =
+            wishlist.filter(
+                item => item !== id
+            );
+
+        showToast("Removed from wishlist");
+
+    }else{
+
+        wishlist.push(id);
+
+        showToast("♥ Added to wishlist");
+
+    }
+
+    updateWishlistCount();
+
+    displayProducts(
+        currentCategory === "all"
+        ? products
+        : products.filter(
+            p => p.category === currentCategory
+        )
+    );
+
+}
+
+
+function updateWishlistCount(){
+
+    document.getElementById("wishCount")
+        .innerText = wishlist.length;
+
+}
+
+
+function showWishlist(){
+
+    const container =
+        document.getElementById("wishlistItems");
+
+    container.innerHTML = "";
+
+    const items =
+        products.filter(
+            p => wishlist.includes(p.id)
+        );
+
+    if(items.length === 0){
+
+        container.innerHTML =
+            '<div class="empty">Your wishlist is empty.</div>';
+
+    }
+
+    items.forEach(product => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "cart-item";
+
+        div.innerHTML = `
+
+            <img src="${product.image}">
+
+            <div class="cart-item-info">
+
+                <h4>${product.name}</h4>
+
+                <p>₹${product.price}</p>
+
+            </div>
+
+            <button class="remove"
+                    onclick="toggleWishlist(${product.id})">
+                Remove
+            </button>
+
+        `;
+
+        container.appendChild(div);
+
+    });
+
+    document.getElementById("wishlistModal")
+        .style.display = "flex";
+
+}
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function openCheckout(){
+
+    if(cart.length === 0){
+
+        showToast("Your cart is empty");
+
+        return;
+
+    }
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        total +=
+            item.product.price *
+            item.quantity;
+
+    });
+
+    document.getElementById("checkoutTotal")
+        .innerText = total;
+
+    closeModal("cartModal");
+
+    document.getElementById("checkoutModal")
+        .style.display = "flex";
+
+}
+
+
+function placeOrder(){
+
+    const name =
+        document.getElementById("customerName")
+        .value.trim();
+
+    const email =
+        document.getElementById("customerEmail")
+        .value.trim();
+
+    const phone =
+        document.getElementById("customerPhone")
+        .value.trim();
+
+    const address =
+        document.getElementById("customerAddress")
+        .value.trim();
+
+    const city =
+        document.getElementById("customerCity")
+        .value.trim();
+
+    const pin =
+        document.getElementById("customerPin")
+        .value.trim();
+
+    if(
+        !name ||
+        !email ||
+        !phone ||
+        !address ||
+        !city ||
+        !pin
+    ){
+
+        alert("Please fill all required fields.");
+
+        return;
+
+    }
+
+
+    const order =
+        "ORD-" +
+        Math.floor(
+            100000 +
+            Math.random() * 900000
+        );
+
+    document.getElementById("orderNumber")
+        .innerText =
+        "Your Order ID is " + order;
+
+
+    cart = [];
+
+    updateCartCount();
+
+    closeModal("checkoutModal");
+
+    document.getElementById("successModal")
+        .style.display = "flex";
+
+}
+
+
+/* =========================
+   UTILITIES
+========================= */
+
+function closeModal(id){
+
+    document.getElementById(id)
+        .style.display = "none";
+
+}
+
+
+function scrollProducts(){
+
+    document
+    .getElementById("productsSection")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.style.display = "block";
+
+    setTimeout(() => {
+
+        toast.style.display = "none";
+
+    },2000);
+
+}
+
+
+/* INITIAL LOAD */
+
+displayProducts(products);
+
+updateCartCount();
+
+updateWishlistCount();
+
+</script>
+
+</body>
+</html>
+
